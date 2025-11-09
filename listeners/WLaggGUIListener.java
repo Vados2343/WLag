@@ -98,7 +98,6 @@ public class WLaggGUIListener implements Listener {
             return;
         }
 
-        // Убираем дублирование для thunder: обрабатываем его только один раз
         if (displayName.equals(thunderKey)) {
             toggleBoolean(p, "warnings.thunder-on-warning", "Гром (thunder)");
             return;
