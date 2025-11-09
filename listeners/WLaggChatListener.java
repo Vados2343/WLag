@@ -18,7 +18,6 @@ public class WLaggChatListener implements Listener {
         Player p = event.getPlayer();
         String msg = event.getMessage().trim();
 
-        // Обработка изменения интервала
         if (WLaggGUIListener.awaitingIntervalInput.contains(p.getUniqueId())) {
             event.setCancelled(true);
             try {
@@ -38,7 +37,6 @@ public class WLaggChatListener implements Listener {
             return;
         }
 
-        // Обработка редактирования ключей (например, warn-broadcast, auto-clear-log, prefix)
         if (WLaggGUIListener.pendingMessageEdits.containsKey(p.getUniqueId())) {
             event.setCancelled(true);
             String key = WLaggGUIListener.pendingMessageEdits.get(p.getUniqueId());
@@ -46,7 +44,6 @@ public class WLaggChatListener implements Listener {
             plugin.getConfig().set(key, msg);
             plugin.saveConfig();
 
-            // По желанию — сразу reload:
             plugin.reloadWLaggConfig();
 
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
