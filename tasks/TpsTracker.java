@@ -9,34 +9,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Improved TPS tracker with optional PlaceholderAPI support via reflection.
- * 1) If config says "use-placeholderapi-for-tps = true" and PAPI is present & loaded,
- *    we attempt to retrieve TPS via me.clip.placeholderapi.PlaceholderAPI.
- * 2) Otherwise, fallback to ring-buffer TPS calculation.
- *
- * Also deals with color codes and multiple TPS values by extracting the FIRST decimal number from the returned string.
- */
 public class TpsTracker {
 
     private static final int SAMPLE_SIZE = 100;
     private static final long[] tickTimestamps = new long[SAMPLE_SIZE];
     private static int nextIndex = 0;
-
-    // Flags for PAPI usage
     private static boolean triedPlaceholderApi = false;
     private static boolean hasPlaceholderApi = false;
     private static String papiPlaceholder = "%server_tps%";
 
-    // Reflection
     private static Class<?> placeholderApiClass = null;
-
-    // Regex для поиска первого числа вида 123 или 12.3
     private static final Pattern DOUBLE_REGEX = Pattern.compile("(\\d+(\\.\\d+)?)");
-
-    /**
-     * Initialize TPS tracking. Also checks if PlaceholderAPI is available, if config says so.
-     */
     public static void start(Plugin plugin) {
         boolean usePapi = plugin.getConfig().getBoolean("use-placeholderapi-for-tps", false);
 
@@ -57,7 +40,6 @@ public class TpsTracker {
             }
         }
 
-        // Schedule ring buffer updates
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -67,11 +49,6 @@ public class TpsTracker {
         }.runTaskTimer(plugin, 0L, 1L);
     }
 
-    /**
-     * Get current TPS.
-     * 1) If PlaceholderAPI is available, try reflection call to get TPS from placeholder.
-     * 2) Otherwise, fallback to ring-buffer approach.
-     */
     public static double getTPS() {
         if (hasPlaceholderApi) {
             double papiTps = tryGetTpsFromPapi();
@@ -82,9 +59,6 @@ public class TpsTracker {
         return getTpsFromRingBuffer();
     }
 
-    /**
-     * Attempt to get TPS from PAPI via reflection, parse first numeric value.
-     */
     private static double tryGetTpsFromPapi() {
         if (placeholderApiClass == null) {
             return -1.0;
@@ -93,17 +67,14 @@ public class TpsTracker {
             Player player = getAnyOnlinePlayer();
             Object argPlayer = (player != null ? player : null);
 
-            // Method signature: public static String setPlaceholders(OfflinePlayer, String)
             java.lang.reflect.Method method = placeholderApiClass.getMethod("setPlaceholders", org.bukkit.OfflinePlayer.class, String.class);
             Object resultObj = method.invoke(null, argPlayer, papiPlaceholder);
             if (resultObj instanceof String) {
                 String text = (String) resultObj;
-                // Strip color codes
                 text = text.replaceAll("§[0-9A-FK-ORa-fk-or]", "");
-                // Now find first decimal number in text
                 Matcher matcher = DOUBLE_REGEX.matcher(text);
                 if (matcher.find()) {
-                    String numberStr = matcher.group(1);  // group(1) = full match of (\\d+(\\.\\d+)?)
+                    String numberStr = matcher.group(1); 
                     return Double.parseDouble(numberStr);
                 }
             }
@@ -113,9 +84,6 @@ public class TpsTracker {
         return -1.0;
     }
 
-    /**
-     * Return any online player, or null if none are online.
-     */
     private static Player getAnyOnlinePlayer() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             return p;
@@ -123,9 +91,7 @@ public class TpsTracker {
         return null;
     }
 
-    /**
-     * The ring buffer fallback approach.
-     */
+
     private static double getTpsFromRingBuffer() {
         int idx = (nextIndex + 1) % SAMPLE_SIZE;
         long elapsed = System.currentTimeMillis() - tickTimestamps[idx];
