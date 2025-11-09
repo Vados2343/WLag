@@ -10,7 +10,6 @@ public class TPSMonitor {
     private static boolean aiDisabled = false;
 
     public static void startMonitoring(WLagg plugin) {
-        // Получаем LanguageManager для переводов
         final String disableMsgTemplate = plugin.getLangManager().get("messages.tpsmonitor-disable-ai");
         final String enableMsgTemplate = plugin.getLangManager().get("messages.tpsmonitor-enable-ai");
 
@@ -22,7 +21,6 @@ public class TPSMonitor {
 
                 if (currentTps < aiThreshold && !aiDisabled) {
                     aiDisabled = true;
-                    // Форматируем сообщение, подставляя текущий TPS и порог
                     String msg = disableMsgTemplate
                             .replace("{0}", String.format("%.2f", currentTps))
                             .replace("{1}", String.format("%.2f", aiThreshold));
