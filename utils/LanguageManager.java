@@ -18,7 +18,6 @@ public class LanguageManager {
         loadFallbackEnglish();
     }
 
-    // Загружаем fallback с английского языка
     private void loadFallbackEnglish() {
         fallbackEn.clear();
         File enFile = extractLangFile("en");
@@ -30,7 +29,6 @@ public class LanguageManager {
         }
     }
 
-    // Загружаем выбранный язык (например, ru или en)
     public void loadLanguage(String langCode) {
         messages.clear();
         File langFile = extractLangFile(langCode);
@@ -43,14 +41,12 @@ public class LanguageManager {
         plugin.getLogger().info("Язык загружен: " + langCode);
     }
 
-    // Получаем сообщение по ключу, сначала из загруженного языка, затем из fallback
     public String get(String path) {
         if (messages.containsKey(path))
             return messages.get(path);
         return fallbackEn.getOrDefault(path, path);
     }
 
-    // Извлекаем файл языка из папки lang
     private File extractLangFile(String langCode) {
         File folder = new File(plugin.getDataFolder(), "lang");
         if (!folder.exists())
