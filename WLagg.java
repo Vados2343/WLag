@@ -23,35 +23,29 @@ public final class WLagg extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();         // скопирует config.yml, если нет
-        reloadConfig();              // прочитает настройки
+        saveDefaultConfig();         
+        reloadConfig();             
 
-        // Подключаем мультиязычность
         langManager = new LanguageManager(this);
         langManager.loadLanguage(getConfig().getString("global-messages.language", "Russian"));
 
-        // Инициализируем свой TPS-трекер
         TpsTracker.start(this);
 
-        // Регистрируем команду /wlagg + табкомплит
         getCommand("wlagg").setExecutor(new WLaggCommand(this));
         getCommand("wlagg").setTabCompleter(new WLaggTabCompleter());
         Bukkit.getPluginManager().registerEvents(new SpawnListener(this), this);
         Bukkit.getPluginManager().registerEvents(new WLaggChatListener(), this);
-        // Периодическая автоочистка + предупреждения
         autoClearManager = new AutoClearManager(this);
         autoClearManager.startAutoClear();
 
-        // Асинхронный монитор TPS, отключение AI, чистка чанков и т.д.
         TPSMonitor.startMonitoring(this);
         Bukkit.getPluginManager().registerEvents(new WLaggGUIListener(), this);
-        printBanner(); // Красивый ASCII
+        printBanner();
         getLogger().info("WLagg включён. Версия: " + getDescription().getVersion());
     }
 
     @Override
     public void onDisable() {
-        // Останавливаем задачи
         autoClearManager.stopAutoClear();
         TPSMonitor.stopMonitoring();
         getLogger().info("WLagg отключён!");
