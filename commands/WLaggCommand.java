@@ -50,11 +50,9 @@ public class WLaggCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         lang.get("messages.prefix") + "&eReloading WLagg config and restarting Spartan..."));
 
-                // Перезагружаем WLagg (без Bukkit.reload(), чтобы не нарушать ClassLoader)
                 WLagg pluginInstance = WLagg.getInstance();
                 pluginInstance.reloadWLaggConfig();
 
-                // Перезагружаем Spartan, если он включён
                 org.bukkit.plugin.Plugin spartan = Bukkit.getPluginManager().getPlugin("Spartan");
                 if (spartan != null && spartan.isEnabled()) {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
