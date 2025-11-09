@@ -15,21 +15,12 @@ import java.util.Arrays;
 
 public class WLaggGUI {
 
-    /**
-     * Открывает главное меню WLagg.
-     * Кнопки:
-     * 1. Очистка дропа
-     * 2. Перезагрузка плагина
-     * 3. Смена языка
-     * 4. Настройка интервала очистки
-     * 5. Эффекты и сообщения
-     */
+
     public static void openMenu(Player p) {
         LanguageManager lang = WLagg.getInstance().getLangManager();
         String title = lang.get("messages.gui-title");
         Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', title));
 
-        // Кнопка 1: Очистка дропа
         ItemStack clearDrops = new ItemStack(Material.PAPER);
         ItemMeta clearDropsMeta = clearDrops.getItemMeta();
         clearDropsMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-drop-clear")));
@@ -39,7 +30,6 @@ public class WLaggGUI {
         clearDrops.setItemMeta(clearDropsMeta);
         inv.setItem(10, clearDrops);
 
-        // Кнопка 2: Перезагрузка плагина
         ItemStack reload = new ItemStack(Material.EMERALD);
         ItemMeta reloadMeta = reload.getItemMeta();
         reloadMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-plugin-reload")));
@@ -49,7 +39,7 @@ public class WLaggGUI {
         reload.setItemMeta(reloadMeta);
         inv.setItem(12, reload);
 
-        // Кнопка 3: Смена языка
+
         ItemStack changeLang = new ItemStack(Material.BOOK);
         ItemMeta changeLangMeta = changeLang.getItemMeta();
         changeLangMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-language")));
@@ -59,7 +49,6 @@ public class WLaggGUI {
         changeLang.setItemMeta(changeLangMeta);
         inv.setItem(14, changeLang);
 
-        // Кнопка 4: Настройка интервала очистки
         ItemStack interval = new ItemStack(Material.CLOCK);
         ItemMeta intervalMeta = interval.getItemMeta();
         intervalMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-set-interval")));
@@ -70,7 +59,6 @@ public class WLaggGUI {
         interval.setItemMeta(intervalMeta);
         inv.setItem(16, interval);
 
-        // Кнопка 5: Эффекты и сообщения
         ItemStack effects = new ItemStack(Material.REDSTONE);
         ItemMeta effectsMeta = effects.getItemMeta();
         effectsMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-effects-and-msg")));
@@ -83,15 +71,11 @@ public class WLaggGUI {
         p.openInventory(inv);
     }
 
-    /**
-     * Открывает подменю для переключения эффектов и сообщений.
-     */
     public static void openEffectsMenu(Player p) {
         LanguageManager lang = WLagg.getInstance().getLangManager();
         String title = lang.get("messages.gui-effects-menu");
         Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', title));
 
-        // Кнопка: Переключение ActionBar
         ItemStack actionbar = new ItemStack(Material.PAPER);
         ItemMeta actionbarMeta = actionbar.getItemMeta();
         actionbarMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-actionbar-toggle")));
@@ -101,7 +85,6 @@ public class WLaggGUI {
         actionbar.setItemMeta(actionbarMeta);
         inv.setItem(11, actionbar);
 
-        // Кнопка: Переключение BossBar
         ItemStack bossbar = new ItemStack(Material.PAPER);
         ItemMeta bossbarMeta = bossbar.getItemMeta();
         bossbarMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-bossbar-toggle")));
@@ -111,7 +94,6 @@ public class WLaggGUI {
         bossbar.setItemMeta(bossbarMeta);
         inv.setItem(13, bossbar);
 
-        // Кнопка: Переключение грома (Thunder)
         ItemStack thunder = new ItemStack(Material.TRIDENT);
         ItemMeta thunderMeta = thunder.getItemMeta();
         thunderMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-thunder-toggle")));
@@ -121,7 +103,6 @@ public class WLaggGUI {
         thunder.setItemMeta(thunderMeta);
         inv.setItem(15, thunder);
 
-        // Кнопка: Время предупреждения
         ItemStack warningTime = new ItemStack(Material.CLOCK);
         ItemMeta warningTimeMeta = warningTime.getItemMeta();
         warningTimeMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-warning-time")));
@@ -131,7 +112,6 @@ public class WLaggGUI {
         warningTime.setItemMeta(warningTimeMeta);
         inv.setItem(17, warningTime);
 
-        // Кнопка: Редактирование сообщений
         ItemStack editMessages = new ItemStack(Material.BOOK);
         ItemMeta editMessagesMeta = editMessages.getItemMeta();
         editMessagesMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-edit-messages")));
@@ -141,7 +121,6 @@ public class WLaggGUI {
         editMessages.setItemMeta(editMessagesMeta);
         inv.setItem(19, editMessages);
 
-        // Кнопка: Дополнительные эффекты
         ItemStack moreEffects = new ItemStack(Material.CHEST);
         ItemMeta moreEffectsMeta = moreEffects.getItemMeta();
         moreEffectsMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', lang.get("messages.gui-more-effects")));
